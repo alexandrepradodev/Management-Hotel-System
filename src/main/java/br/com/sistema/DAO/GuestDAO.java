@@ -1,5 +1,7 @@
 package br.com.sistema.DAO;
 
+import br.com.sistema.model.Guest;
+
 import javax.persistence.EntityManager;
 
 public class GuestDAO {
@@ -10,5 +12,9 @@ public class GuestDAO {
 
     public GuestDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    public void save(Guest guest) {
+        entityManager.persist(guest);
     }
 }

@@ -1,5 +1,9 @@
+import br.com.sistema.DAO.GuestDAO;
+import br.com.sistema.model.Guest;
 import br.com.sistema.util.AgeCalculator;
+import br.com.sistema.util.JPAUtil;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -18,7 +22,15 @@ public class Main {
 
         while (option != 0) {
 
+
+
             option = showMenu();
+
+            switch (option) {
+                case 1:
+                    newGuest();
+                    break;
+            }
 
 
             }
@@ -53,6 +65,17 @@ public class Main {
         AgeCalculator ageCalculator = new AgeCalculator();
 
         int age = ageCalculator.calculateAge(birthday, LocalDate.now());
+
+        Guest guest = new Guest(name, birthday, age);
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        GuestDAO guestDAO = new GuestDAO(entityManager);
+
+        entityManager.getTransaction().begin();
+        guestDAO.save(guest);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+
 
 
     }
