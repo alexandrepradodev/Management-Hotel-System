@@ -1,4 +1,4 @@
-package br.com.sistema.DAO;
+package br.com.sistema.model;
 
 import br.com.sistema.model.Tier;
 import org.hibernate.annotations.GenericGenerator;
@@ -27,6 +27,8 @@ public class Bedroom {
     @Column(name = "valor_diaria")
     private BigDecimal dailyRate;
     @Column(name = "nivel")
+    @ManyToOne
+    @JoinColumn(name = "nivel_id")
     private Tier tier;
 
 

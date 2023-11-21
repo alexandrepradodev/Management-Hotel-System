@@ -1,4 +1,4 @@
-package br.com.sistema.DAO;
+package br.com.sistema.model;
 
 public class Reservation {
 
