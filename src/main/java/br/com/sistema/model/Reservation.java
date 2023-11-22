@@ -3,6 +3,7 @@ package br.com.sistema.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "reservas")
@@ -112,5 +113,16 @@ public class Reservation {
 
     public void setStayValue(BigDecimal stayValue) {
         this.stayValue = stayValue;
+    }
+
+    public BigDecimal calculateStay(BigDecimal valuePerDay, Integer days, Integer adults, Integer children) {
+        return valuePerDay.multiply(BigDecimal.valueOf(days))
+                .add(BigDecimal.valueOf(adults).multiply(BigDecimal.valueOf(75.0)).multiply(BigDecimal.valueOf(days)))
+                .add(BigDecimal.valueOf(children).multiply(BigDecimal.valueOf(50.0).multiply(BigDecimal.valueOf(days))));
+    }
+
+    public int calculateDays(LocalDate checkIn, LocalDate checkOut) {
+        Period period = Period.between(checkIn, checkOut);
+        return period.getDays();
     }
 }

@@ -17,4 +17,12 @@ public class GuestDAO {
     public void save(Guest guest) {
         entityManager.persist(guest);
     }
+
+    public Guest getGuestPerId(Long id) {
+        String jpql = "SELECT g FROM Guest g WHERE id = :id";
+        return entityManager
+                .createQuery(jpql, Guest.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }
