@@ -1,2 +1,21 @@
-package br.com.sistema.DAO;public class TierDAO {
+package br.com.sistema.DAO;
+
+import br.com.sistema.model.Tier;
+
+import javax.persistence.EntityManager;
+
+public class TierDAO {
+    private EntityManager entityManager;
+
+    public TierDAO() {
+    }
+
+    public TierDAO(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public void save(Tier tier) {
+        this.entityManager.persist(tier);
+    }
+
 }

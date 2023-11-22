@@ -1,9 +1,14 @@
+import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.GuestDAO;
+import br.com.sistema.DAO.TierDAO;
+import br.com.sistema.model.Bedroom;
 import br.com.sistema.model.Guest;
+import br.com.sistema.model.Tier;
 import br.com.sistema.util.AgeCalculator;
 import br.com.sistema.util.JPAUtil;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -30,7 +35,11 @@ public class Main {
                 case 1:
                     newGuest();
                     break;
+                case 2:
+                    newBedroom();
+                    break;
             }
+
 
 
             }
@@ -42,10 +51,10 @@ public class Main {
                 
                 1 - Cadastrar hóspede.
                 2 - Cadastrar quarto.
-                3 - Listar clientes cadastrados
+                3 - Fazer reserva.
                 4 - Listar quartos disponíveis.
                 5 - Listar quartos ocupados.
-                6 - Fazer reserva.
+                6 - 
                 0 - Sair.
                 """);
 
@@ -56,7 +65,7 @@ public class Main {
     public static void newGuest() {
 
         scanner.nextLine();
-        System.out.print("Nome do hóspede: ");
+        System.out.print("\nNome do hóspede: ");
         String name = scanner.nextLine();
 
         System.out.print("Data de nascimento: ");
@@ -74,10 +83,32 @@ public class Main {
         guestDAO.save(guest);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+    public static void newBedroom() {
 
+        scanner.nextLine();
+        System.out.print("\nCapacidade total do quarto: ");
+        int capacity = scanner.nextInt();
+        scanner.nextLine();
 
+        System.out.print("Valor da diária: ");
+        BigDecimal dailyRate = scanner.nextBigDecimal();
+        scanner.nextLine();
 
+        System.out.print("Nível do quarto: ");
+        String tierName = scanner.nextLine();
+        Tier tier = new Tier(tierName);
 
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
+        Bedroom bedroom = new Bedroom(capacity, dailyRate, tier);
+        TierDAO tierDAO = new TierDAO(entityManager);
+
+        entityManager.getTransaction().begin();
+        tierDAO.save(tier);
+        bedroomDAO.save(bedroom);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
 
