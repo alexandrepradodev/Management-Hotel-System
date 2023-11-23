@@ -4,10 +4,14 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "reservas")
 public class Reservation {
+
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reserva")
@@ -124,5 +128,17 @@ public class Reservation {
     public int calculateDays(LocalDate checkIn, LocalDate checkOut) {
         Period period = Period.between(checkIn, checkOut);
         return period.getDays();
+    }
+
+    public StringBuilder stringBuilder() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Número do quarto: ").append(bedroom.getBedroomNumber());
+        stringBuilder.append("\nNome do hóspede: ").append(guest.getName());
+        stringBuilder.append("\nQuantidade de crianças: ").append(children);
+        stringBuilder.append("\nQuantidade de adultos: ").append(adults);
+        stringBuilder.append("\nData de Check-in: ").append(checkIn.format(dateTimeFormatter));
+        stringBuilder.append("\nData de Check-out: ").append(checkOut.format(dateTimeFormatter));
+        stringBuilder.append("\nValor total da estádia: R$ ").append(stayValue);
+        return stringBuilder;
     }
 }
