@@ -1,8 +1,11 @@
 package br.com.sistema.DAO;
 
+import br.com.sistema.model.Bedroom;
 import br.com.sistema.model.Guest;
+import br.com.sistema.model.Reservation;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuestDAO {
@@ -32,5 +35,40 @@ public class GuestDAO {
         return entityManager
                 .createQuery(jpql, Guest.class)
                 .getResultList();
+    }
+    public void removeGuestPerId(Long id) {
+        Guest guest = entityManager.find(Guest.class, id);
+        String jpql = "SELECT r.id FROM Reservation r WHERE r.guest.id = :id";
+        List<Long> reservationIds = entityManager
+                .createQuery(jpql, Long.class)
+                .setParameter("id", id)
+                .getResultList();
+
+        List<Long> idListForremoval = new ArrayList<>();
+        for (Long reservationId : reservationIds) {
+            entityManager.find(Reservation.class, reservationId);
+            idListForremoval.add(reservationId);
+        }
+
+        String jpqlAllReservations = "SELECT r FROM Reservation r";
+        List<Reservation> allReservations = entityManager
+                .createQuery(jpqlAllReservations, Reservation.class)
+                .getResultList();
+
+        if (guest != null) {
+
+            entityManager.remove(guest);
+
+                for (Long reservationId : idListForremoval) {
+                    Reservation reservationForRemoval = entityManager.find(Reservation.class, reservationId);
+                    entityManager.remove(reservationForRemoval);
+                }
+
+            System.out.println("\nExclusão realizada com sucesso!");
+        }
+        else {
+            System.out.printf("\nNão existe hóspede com o id %d.", id);
+        }
+
     }
 }

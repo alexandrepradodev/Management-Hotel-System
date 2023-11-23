@@ -53,11 +53,10 @@ public class Main {
                 case 6:
                     showAllReservations();
                     break;
-
+                case 7:
+                    removeGuest();
+                }
             }
-
-            }
-
         }
 
     public static int showMenu() {
@@ -69,6 +68,7 @@ public class Main {
                 4 - Listar hóspedes cadastrados.
                 5 - Listar quartos cadastrados.
                 6 - Listar reservas.
+                7 - Excluir cadastro de hóspede.
                 0 - Sair.
                 """);
 
@@ -199,8 +199,27 @@ public class Main {
             System.out.println(reservation.stringBuilder());
             System.out.println();
         }
-    }
 
+    }
+    public static void removeGuest() {
+        scanner.nextLine();
+
+        showAllGuests();
+
+        System.out.print("Digite o Id do cliente que deseja remover: ");
+        Long guestId = scanner.nextLong();
+
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        GuestDAO guestDAO = new GuestDAO(entityManager);
+
+        entityManager.getTransaction().begin();
+        guestDAO.removeGuestPerId(guestId);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+
+
+    }
 
 }
 
