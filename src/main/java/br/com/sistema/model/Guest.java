@@ -2,12 +2,17 @@ package br.com.sistema.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "hospedes")
 public class Guest {
+
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,5 +72,15 @@ public class Guest {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public StringBuilder stringBuilder() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Id: ").append(id);
+        stringBuilder.append("\nNome: ").append(name);
+        stringBuilder.append("\nData de nascimento: ").append(birthday.format(dateTimeFormatter));
+        stringBuilder.append("\nIdade: ").append(age).append(" anos");
+        return stringBuilder;
+
     }
 }

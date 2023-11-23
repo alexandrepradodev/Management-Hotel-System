@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -42,6 +43,8 @@ public class Main {
                     break;
                 case 3:
                     makeReservation();
+                case 4:
+                    showAllGuests();
 
             }
 
@@ -55,9 +58,9 @@ public class Main {
                 1 - Cadastrar hóspede.
                 2 - Cadastrar quarto.
                 3 - Fazer reserva.
-                4 - Listar quartos disponíveis.
-                5 - Listar quartos ocupados.
-                6 - 
+                4 - Listar hóspedes cadastrados.
+                5 - Listar quartos cadastrados.
+                6 - Listar reservas.
                 0 - Sair.
                 """);
 
@@ -155,11 +158,19 @@ public class Main {
         reservationDAO.save(reservation);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    public static void showAllGuests() {
 
 
+        GuestDAO guestDAO = new GuestDAO(JPAUtil.getEntityManager());
+        List<Guest> guests = guestDAO.getAllGuests();
 
+        for (Guest guest: guests) {
+            System.out.println(guest.stringBuilder());
+            System.out.println();
 
-
+        }
     }
 
 
