@@ -86,4 +86,12 @@ public class Bedroom {
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
+    public StringBuilder stringBuilder() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Número do quarto: ").append(bedroomNumber);
+        stringBuilder.append("\nCapacidade total: ").append(capacity).append(" pessoas");
+        stringBuilder.append("\nValor da diária: R$ ").append(dailyRate);
+        stringBuilder.append("\nTipo do quarto: ").append(bedroomTier.getName());
+        return stringBuilder;
+    }
 }

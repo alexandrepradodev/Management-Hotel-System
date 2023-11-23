@@ -45,6 +45,8 @@ public class Main {
                     makeReservation();
                 case 4:
                     showAllGuests();
+                case 5:
+                    showAllBedrooms();
 
             }
 
@@ -171,6 +173,19 @@ public class Main {
             System.out.println();
 
         }
+    }
+    public static void showAllBedrooms() {
+
+        BedroomDAO bedroomDAO = new BedroomDAO(JPAUtil.getEntityManager());
+        List<Bedroom> bedrooms = bedroomDAO.showAllBedrooms();
+
+        for (Bedroom bedroom : bedrooms) {
+            System.out.println(bedroom.stringBuilder());
+            System.out.println();
+        }
+
+
+
     }
 
 

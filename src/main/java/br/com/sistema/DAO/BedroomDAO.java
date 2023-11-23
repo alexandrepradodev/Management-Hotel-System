@@ -4,6 +4,7 @@ import br.com.sistema.model.Bedroom;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BedroomDAO {
 
@@ -36,5 +37,9 @@ public class BedroomDAO {
                 .createQuery(jpql, BigDecimal.class)
                 .setParameter("id", id)
                 .getSingleResult();
+    }
+    public List<Bedroom> showAllBedrooms() {
+        String jpql = "SELECT b FROM Bedroom b";
+        return entityManager.createQuery(jpql, Bedroom.class).getResultList();
     }
 }
