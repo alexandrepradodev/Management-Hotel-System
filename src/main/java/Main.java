@@ -122,13 +122,8 @@ public class Main {
     }
     public static void showAllReservations() {
 
-        ReservationDAO reservationDAO = new ReservationDAO(JPAUtil.getEntityManager());
-        List<Reservation> reservations = reservationDAO.getAllReservation();
-
-        for (Reservation reservation : reservations) {
-            System.out.println(reservation.stringBuilder());
-            System.out.println();
-        }
+        ReservationService reservationService = new ReservationService();
+        reservationService.showAllReservations();
 
     }
     public static void removeGuest() {

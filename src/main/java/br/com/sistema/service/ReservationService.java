@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class ReservationService {
@@ -59,5 +60,15 @@ public class ReservationService {
         reservationDAO.save(reservation);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    public void showAllReservations() {
+        ReservationDAO reservationDAO = new ReservationDAO(JPAUtil.getEntityManager());
+        List<Reservation> reservations = reservationDAO.getAllReservation();
+
+        for (Reservation reservation : reservations) {
+            System.out.println(reservation.stringBuilder());
+            System.out.println();
+        }
     }
 }
