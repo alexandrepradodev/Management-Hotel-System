@@ -107,6 +107,7 @@ public class Main {
         GuestService.removeGuest();
     }
     public static void cancelReservation() {
+
         ReservationService.cancelReservation();
 
     }

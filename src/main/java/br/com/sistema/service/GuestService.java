@@ -1,5 +1,6 @@
 package br.com.sistema.service;
 
+import br.com.sistema.BusinessRuleException;
 import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.model.Guest;
 import br.com.sistema.util.AgeCalculator;
@@ -17,24 +18,42 @@ public class GuestService {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void newGuest() {
-        System.out.print("\nNome do hóspede: ");
-        String name = scanner.nextLine();
 
-        System.out.print("Data de nascimento: ");
-        LocalDate birthday = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+        try {
 
-        AgeCalculator ageCalculator = new AgeCalculator();
+            System.out.print("\nNome do hóspede: ");
+            String name = scanner.nextLine();
+            if (name.isEmpty() || name.matches(".*\\d+.*")) {
+                throw new IllegalArgumentException("O nome do hóspede não pode estar vazio ou conter números");
+            }
 
-        int age = ageCalculator.calculateAge(birthday, LocalDate.now());
 
-        Guest guest = new Guest(name, birthday, age);
-        EntityManager entityManager = JPAUtil.getEntityManager();
-        GuestDAO guestDAO = new GuestDAO(entityManager);
+            System.out.print("Data de nascimento: ");
+            LocalDate birthday = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
 
-        entityManager.getTransaction().begin();
-        guestDAO.save(guest);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+            if (birthday.isAfter(LocalDate.now()) || birthday.isEqual(LocalDate.now())) {
+                throw new IllegalArgumentException("A data de nascimento precisa ser anterior à data atual");
+            }
+
+            AgeCalculator ageCalculator = new AgeCalculator();
+
+            int age = ageCalculator.calculateAge(birthday, LocalDate.now());
+            if (age <= 14) {
+                throw new IllegalArgumentException("Para ter cadastro no sistema," +
+                        " o hóspede precisa ter mais de 14 anos");
+            }
+
+            Guest guest = new Guest(name, birthday, age);
+            EntityManager entityManager = JPAUtil.getEntityManager();
+            GuestDAO guestDAO = new GuestDAO(entityManager);
+
+            entityManager.getTransaction().begin();
+            guestDAO.save(guest);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+        } catch (RuntimeException e) {
+            throw new BusinessRuleException(e.getMessage());
+        }
     }
 
     public static void showAllGuests() {
@@ -49,6 +68,7 @@ public class GuestService {
         }
     }
     public static void removeGuest(){
+
         showAllGuests();
 
         System.out.print("Digite o Id do cliente que deseja remover: ");
@@ -57,9 +77,15 @@ public class GuestService {
         EntityManager entityManager = JPAUtil.getEntityManager();
         GuestDAO guestDAO = new GuestDAO(entityManager);
 
-        entityManager.getTransaction().begin();
-        guestDAO.removeGuestPerId(guestId);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        if (guestDAO.getAllIds().contains(guestId)) {
+            entityManager.getTransaction().begin();
+            guestDAO.removeGuestPerId(guestId);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+        } else {
+            throw new IllegalArgumentException("O id digitado não corresponde a nenhum dos hóspedes");
+        }
+
+
     }
 }

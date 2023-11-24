@@ -66,9 +66,14 @@ public class GuestDAO {
 
             System.out.println("\nExclusão realizada com sucesso!");
         }
-        else {
-            System.out.printf("\nNão existe hóspede com o id %d.", id);
-        }
+
+
+    }
+    public List<Long> getAllIds() {
+
+        String jpql = "SELECT g.id FROM Guest g";
+        List<Long> ids = entityManager.createQuery(jpql, Long.class).getResultList();
+        return ids;
 
     }
 }
