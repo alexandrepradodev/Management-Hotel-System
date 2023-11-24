@@ -106,15 +106,9 @@ public class Main {
 
     public static void showAllGuests() {
 
+        GuestService guestService = new GuestService();
+        guestService.showAllGuests();
 
-        GuestDAO guestDAO = new GuestDAO(JPAUtil.getEntityManager());
-        List<Guest> guests = guestDAO.getAllGuests();
-
-        for (Guest guest: guests) {
-            System.out.println(guest.stringBuilder());
-            System.out.println();
-
-        }
     }
     public static void showAllBedrooms() {
 

@@ -8,6 +8,7 @@ import br.com.sistema.util.JPAUtil;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class GuestService {
@@ -34,5 +35,17 @@ public class GuestService {
         guestDAO.save(guest);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    public void showAllGuests() {
+
+        GuestDAO guestDAO = new GuestDAO(JPAUtil.getEntityManager());
+        List<Guest> guests = guestDAO.getAllGuests();
+
+        for (Guest guest: guests) {
+            System.out.println(guest.stringBuilder());
+            System.out.println();
+
+        }
     }
 }
