@@ -1,5 +1,6 @@
 package br.com.sistema.service;
 
+import br.com.sistema.BusinessRuleException;
 import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.TierDAO;
 import br.com.sistema.model.Bedroom;
@@ -17,29 +18,48 @@ public class BedroomService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public static void newBedroom() {
-        System.out.print("\nCapacidade total do quarto: ");
-        int capacity = scanner.nextInt();
-        scanner.nextLine();
+    public static void newBedroom(){
 
-        System.out.print("Valor da diária: ");
-        BigDecimal dailyRate = scanner.nextBigDecimal();
-        scanner.nextLine();
+        try {
 
-        System.out.print("Nível do quarto: ");
-        String tierName = scanner.nextLine();
-        Tier tier = new Tier(tierName);
 
-        EntityManager entityManager = JPAUtil.getEntityManager();
-        BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
-        Bedroom bedroom = new Bedroom(capacity, dailyRate, tier);
-        TierDAO tierDAO = new TierDAO(entityManager);
+            System.out.print("\nCapacidade total do quarto: ");
+            int capacity = scanner.nextInt();
+            if (capacity <= 0) {
+                throw new IllegalArgumentException("A capacidade total do quarto precisa ser maior do que zero.");
+            }
+            scanner.nextLine();
 
-        entityManager.getTransaction().begin();
-        tierDAO.save(tier);
-        bedroomDAO.save(bedroom);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+            System.out.print("Valor da diária: ");
+            BigDecimal dailyRate = scanner.nextBigDecimal();
+            if (dailyRate.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("O valor da diária precisa ser maior que zero reais");
+            }
+            scanner.nextLine();
+
+            System.out.print("Nível do quarto: ");
+            String tierName = scanner.nextLine();
+            Tier tier = new Tier(tierName);
+            if (tierName.isEmpty()) {
+                throw new IllegalArgumentException("O nível do quarto não pode ficar vazio");
+            }
+
+            EntityManager entityManager = JPAUtil.getEntityManager();
+            BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
+            Bedroom bedroom = new Bedroom(capacity, dailyRate, tier);
+            TierDAO tierDAO = new TierDAO(entityManager);
+
+            entityManager.getTransaction().begin();
+            tierDAO.save(tier);
+            bedroomDAO.save(bedroom);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+
+        } catch (RuntimeException e) {
+            throw new BusinessRuleException(e.getMessage());
+
+
+        }
     }
 
     public static void showAllBedrooms() {

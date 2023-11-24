@@ -42,4 +42,6 @@ public class BedroomDAO {
         String jpql = "SELECT b FROM Bedroom b";
         return entityManager.createQuery(jpql, Bedroom.class).getResultList();
     }
+
+
 }
