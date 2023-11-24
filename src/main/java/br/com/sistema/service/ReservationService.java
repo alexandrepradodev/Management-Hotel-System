@@ -62,7 +62,7 @@ public class ReservationService {
         entityManager.close();
     }
 
-    public void showAllReservations() {
+    public static void showAllReservations() {
         ReservationDAO reservationDAO = new ReservationDAO(JPAUtil.getEntityManager());
         List<Reservation> reservations = reservationDAO.getAllReservation();
 

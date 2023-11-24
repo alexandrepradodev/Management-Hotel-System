@@ -16,7 +16,7 @@ public class GuestService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public void newGuest() {
+    public static void newGuest() {
         System.out.print("\nNome do hóspede: ");
         String name = scanner.nextLine();
 
@@ -37,7 +37,7 @@ public class GuestService {
         entityManager.close();
     }
 
-    public void showAllGuests() {
+    public static void showAllGuests() {
 
         GuestDAO guestDAO = new GuestDAO(JPAUtil.getEntityManager());
         List<Guest> guests = guestDAO.getAllGuests();

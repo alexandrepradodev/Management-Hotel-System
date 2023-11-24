@@ -9,6 +9,7 @@ import br.com.sistema.util.JPAUtil;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class BedroomService {
@@ -16,7 +17,7 @@ public class BedroomService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public void newBedroom() {
+    public static void newBedroom() {
         System.out.print("\nCapacidade total do quarto: ");
         int capacity = scanner.nextInt();
         scanner.nextLine();
@@ -39,5 +40,15 @@ public class BedroomService {
         bedroomDAO.save(bedroom);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    public static void showAllBedrooms() {
+        BedroomDAO bedroomDAO = new BedroomDAO(JPAUtil.getEntityManager());
+        List<Bedroom> bedrooms = bedroomDAO.showAllBedrooms();
+
+        for (Bedroom bedroom : bedrooms) {
+            System.out.println(bedroom.stringBuilder());
+            System.out.println();
+        }
     }
 }

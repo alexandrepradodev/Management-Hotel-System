@@ -87,15 +87,13 @@ public class Main {
     }
     public static void newGuest() {
 
-        GuestService guestService = new GuestService();
-        guestService.newGuest();
+        GuestService.newGuest();
 
 
     }
     public static void newBedroom() {
 
-        BedroomService bedroomService = new BedroomService();
-        bedroomService.newBedroom();
+        BedroomService.newBedroom();
     }
 
     public static void makeReservation() {
@@ -106,24 +104,16 @@ public class Main {
 
     public static void showAllGuests() {
 
-        GuestService guestService = new GuestService();
-        guestService.showAllGuests();
+        GuestService.showAllGuests();
 
     }
     public static void showAllBedrooms() {
 
-        BedroomDAO bedroomDAO = new BedroomDAO(JPAUtil.getEntityManager());
-        List<Bedroom> bedrooms = bedroomDAO.showAllBedrooms();
-
-        for (Bedroom bedroom : bedrooms) {
-            System.out.println(bedroom.stringBuilder());
-            System.out.println();
-        }
+        BedroomService.showAllBedrooms();
     }
     public static void showAllReservations() {
 
-        ReservationService reservationService = new ReservationService();
-        reservationService.showAllReservations();
+        ReservationService.showAllReservations();
 
     }
     public static void removeGuest() {
