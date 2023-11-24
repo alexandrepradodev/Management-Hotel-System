@@ -117,42 +117,11 @@ public class Main {
 
     }
     public static void removeGuest() {
-        scanner.nextLine();
 
-        showAllGuests();
-
-        System.out.print("Digite o Id do cliente que deseja remover: ");
-        Long guestId = scanner.nextLong();
-
-        EntityManager entityManager = JPAUtil.getEntityManager();
-        GuestDAO guestDAO = new GuestDAO(entityManager);
-
-        entityManager.getTransaction().begin();
-        guestDAO.removeGuestPerId(guestId);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        GuestService.removeGuest();
     }
     public static void cancelReservation() {
-
-        EntityManager entityManager = JPAUtil.getEntityManager();
-        ReservationDAO reservationDAO = new ReservationDAO(entityManager);
-
-        List<Reservation> reservationList = reservationDAO.getAllReservation();
-
-        for (Reservation reservation : reservationList) {
-            System.out.print(reservation.stringBuilder2());
-            System.out.println("\n");
-        }
-
-        System.out.print("Digite o id da reserva que deseja cancelar: ");
-        Long reservationId = scanner.nextLong();
-
-
-
-        entityManager.getTransaction().begin();
-        reservationDAO.cancelReservation(reservationId);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        ReservationService.cancelReservation();
 
     }
 }

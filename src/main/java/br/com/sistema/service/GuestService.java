@@ -48,4 +48,18 @@ public class GuestService {
 
         }
     }
+    public static void removeGuest(){
+        showAllGuests();
+
+        System.out.print("Digite o Id do cliente que deseja remover: ");
+        Long guestId = scanner.nextLong();
+
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        GuestDAO guestDAO = new GuestDAO(entityManager);
+
+        entityManager.getTransaction().begin();
+        guestDAO.removeGuestPerId(guestId);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }

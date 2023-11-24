@@ -71,4 +71,26 @@ public class ReservationService {
             System.out.println();
         }
     }
+    public static void cancelReservation() {
+
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        ReservationDAO reservationDAO = new ReservationDAO(entityManager);
+
+        List<Reservation> reservationList = reservationDAO.getAllReservation();
+
+        for (Reservation reservation : reservationList) {
+            System.out.print(reservation.stringBuilder2());
+            System.out.println("\n");
+        }
+
+        System.out.print("Digite o id da reserva que deseja cancelar: ");
+        Long reservationId = scanner.nextLong();
+
+        entityManager.getTransaction().begin();
+        reservationDAO.cancelReservation(reservationId);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+    }
+
 }
