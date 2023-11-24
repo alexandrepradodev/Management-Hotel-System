@@ -1,22 +1,8 @@
-import br.com.sistema.DAO.BedroomDAO;
-import br.com.sistema.DAO.GuestDAO;
-import br.com.sistema.DAO.ReservationDAO;
-import br.com.sistema.DAO.TierDAO;
-import br.com.sistema.model.Bedroom;
-import br.com.sistema.model.Guest;
-import br.com.sistema.model.Reservation;
-import br.com.sistema.model.Tier;
 import br.com.sistema.service.BedroomService;
 import br.com.sistema.service.GuestService;
 import br.com.sistema.service.ReservationService;
-import br.com.sistema.util.AgeCalculator;
-import br.com.sistema.util.JPAUtil;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
