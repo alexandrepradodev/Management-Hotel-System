@@ -55,6 +55,11 @@ public class Main {
                     break;
                 case 7:
                     removeGuest();
+                    break;
+                case 8:
+                    cancelReservation();
+                    break;
+
                 }
             }
         }
@@ -69,6 +74,7 @@ public class Main {
                 5 - Listar quartos cadastrados.
                 6 - Listar reservas.
                 7 - Excluir cadastro de hóspede.
+                8 - Cancelar reserva de hóspede.
                 0 - Sair.
                 """);
 
@@ -216,11 +222,30 @@ public class Main {
         guestDAO.removeGuestPerId(guestId);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+    public static void cancelReservation() {
+
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        ReservationDAO reservationDAO = new ReservationDAO(entityManager);
+
+        List<Reservation> reservationList = reservationDAO.getAllReservation();
+
+        for (Reservation reservation : reservationList) {
+            System.out.print(reservation.stringBuilder2());
+            System.out.println("\n");
+        }
+
+        System.out.print("Digite o id da reserva que deseja cancelar: ");
+        Long reservationId = scanner.nextLong();
 
 
+
+        entityManager.getTransaction().begin();
+        reservationDAO.cancelReservation(reservationId);
+        entityManager.getTransaction().commit();
+        entityManager.close();
 
     }
-
 }
 
 

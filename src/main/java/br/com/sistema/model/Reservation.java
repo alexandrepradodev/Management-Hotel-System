@@ -130,6 +130,16 @@ public class Reservation {
         return period.getDays();
     }
 
+    public StringBuilder stringBuilder2() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Id da reserva: ").append(id);
+        stringBuilder.append("\nNome do hóspeede: ").append(guest.getName());
+        stringBuilder.append("\nNúmero do quarto: ").append(bedroom.getBedroomNumber());
+        stringBuilder.append("\nData de Check-in: ").append(checkIn.format(dateTimeFormatter));
+        stringBuilder.append("\nData de Check-out: ").append(checkOut.format(dateTimeFormatter));
+        return stringBuilder;
+    }
+
     public StringBuilder stringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Número do quarto: ").append(bedroom.getBedroomNumber());
