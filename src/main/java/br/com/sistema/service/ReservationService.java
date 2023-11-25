@@ -19,6 +19,7 @@ import java.util.Scanner;
 public class ReservationService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private LocalDate now = LocalDate.now();
 
 
 
@@ -74,16 +75,23 @@ public class ReservationService {
 
             System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
             Long bedroomNumber = scanner.nextLong();
-            scanner.nextLine();
-            if (!reservationDAO.getAllIds().contains(bedroomNumber)) {
-                throw new BusinessRuleException("Esse número de quarto não existe ou não está disponível");
-            }
 
+            if (!reservationDAO.getAllIds().contains(bedroomNumber)) {
+                throw new BusinessRuleException("Esse número de quarto não existe. ");
+            }
+            scanner.nextLine();
             System.out.print("Data do check-in (DD/MM/AAAA): ");
             LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            if (checkIn.isBefore(now)) {
+                throw new BusinessRuleException("A data de check-in precisa ser a de hoje ou depois");
+            }
 
             System.out.print("Data do check-out (DD/MM/AAAA): ");
             LocalDate checkOut = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            if (checkOut.isBefore(checkIn)) {
+                throw new BusinessRuleException("A data de check-out precisa ser a" +
+                        " data do check-in ou uma data posterior");
+            }
 
             Reservation reservation1 = new Reservation();
             BigDecimal dailyRate = bedroomDAO.getDailyRatePerId(bedroomNumber);
