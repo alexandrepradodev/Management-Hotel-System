@@ -18,12 +18,14 @@ import java.util.Scanner;
 public class ReservationService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static EntityManager entityManager = JPAUtil.getEntityManager();
 
 
     public void makeReservation() {
 
         System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
         Long bedroomNumber = scanner.nextLong();
+
 
         System.out.print("Digite o Id do cliente que deseja fazer a reserva: ");
         Long guestId = scanner.nextLong();
@@ -42,7 +44,7 @@ public class ReservationService {
         System.out.print("Data do check-out (DD/MM/AAAA): ");
         LocalDate checkOut = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
 
-        EntityManager entityManager = JPAUtil.getEntityManager();
+
         ReservationDAO reservationDAO = new ReservationDAO(entityManager);
         BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
         GuestDAO guestDAO = new GuestDAO(entityManager);
@@ -63,7 +65,7 @@ public class ReservationService {
     }
 
     public static void showAllReservations() {
-        ReservationDAO reservationDAO = new ReservationDAO(JPAUtil.getEntityManager());
+        ReservationDAO reservationDAO = new ReservationDAO(entityManager);
         List<Reservation> reservations = reservationDAO.getAllReservation();
 
         for (Reservation reservation : reservations) {
@@ -73,7 +75,6 @@ public class ReservationService {
     }
     public static void cancelReservation() {
 
-        EntityManager entityManager = JPAUtil.getEntityManager();
         ReservationDAO reservationDAO = new ReservationDAO(entityManager);
 
         List<Reservation> reservationList = reservationDAO.getAllReservation();

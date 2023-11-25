@@ -41,5 +41,10 @@ public class ReservationDAO {
         entityManager.remove(reservationToRemove);
     }
 
+    public List<Long> getAllIds() {
+        String jpql = "SELECT r.id FROM Reservation r";
+        return entityManager.createQuery(jpql, Long.class).getResultList();
+    }
+
 
 }

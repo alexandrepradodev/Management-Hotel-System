@@ -16,6 +16,7 @@ public class GuestService {
 
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static EntityManager entityManager = JPAUtil.getEntityManager();
 
     public static void newGuest() {
 
@@ -44,7 +45,6 @@ public class GuestService {
             }
 
             Guest guest = new Guest(name, birthday, age);
-            EntityManager entityManager = JPAUtil.getEntityManager();
             GuestDAO guestDAO = new GuestDAO(entityManager);
 
             entityManager.getTransaction().begin();
@@ -58,7 +58,7 @@ public class GuestService {
 
     public static void showAllGuests() {
 
-        GuestDAO guestDAO = new GuestDAO(JPAUtil.getEntityManager());
+        GuestDAO guestDAO = new GuestDAO(entityManager);
         List<Guest> guests = guestDAO.getAllGuests();
 
         for (Guest guest: guests) {
@@ -73,8 +73,6 @@ public class GuestService {
 
         System.out.print("Digite o Id do cliente que deseja remover: ");
         Long guestId = scanner.nextLong();
-
-        EntityManager entityManager = JPAUtil.getEntityManager();
         GuestDAO guestDAO = new GuestDAO(entityManager);
 
         if (guestDAO.getAllIds().contains(guestId)) {

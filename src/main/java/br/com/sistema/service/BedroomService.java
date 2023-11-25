@@ -17,6 +17,7 @@ public class BedroomService {
 
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static EntityManager entityManager = JPAUtil.getEntityManager();
 
     public static void newBedroom(){
 
@@ -44,7 +45,6 @@ public class BedroomService {
                 throw new IllegalArgumentException("O nível do quarto não pode ficar vazio");
             }
 
-            EntityManager entityManager = JPAUtil.getEntityManager();
             BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
             Bedroom bedroom = new Bedroom(capacity, dailyRate, tier);
             TierDAO tierDAO = new TierDAO(entityManager);
@@ -63,7 +63,7 @@ public class BedroomService {
     }
 
     public static void showAllBedrooms() {
-        BedroomDAO bedroomDAO = new BedroomDAO(JPAUtil.getEntityManager());
+        BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
         List<Bedroom> bedrooms = bedroomDAO.showAllBedrooms();
 
         for (Bedroom bedroom : bedrooms) {
