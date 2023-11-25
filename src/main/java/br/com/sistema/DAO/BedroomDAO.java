@@ -43,5 +43,22 @@ public class BedroomDAO {
         return entityManager.createQuery(jpql, Bedroom.class).getResultList();
     }
 
+    public int getBedroomCapacity(Long id) {
+        String jpql = "SELECT b.capacity FROM Bedroom b WHERE b.id = :id";
+        return entityManager
+                .createQuery(jpql, int.class).setParameter("id", id)
+                .getSingleResult();
+    }
+    public List<Bedroom> showBedroomPerCapacity(int people) {
+        String jpql = "SELECT b FROM Bedroom b WHERE b.capacity >= :people";
+        return entityManager.createQuery(jpql, Bedroom.class).setParameter("people", people).getResultList();
+
+
+    }
+    public List<Long> getAllids() {
+        String jpql = "SELECT b.id FROM Bedroom b";
+        return entityManager.createQuery(jpql, Long.class).getResultList();
+    }
+
 
 }

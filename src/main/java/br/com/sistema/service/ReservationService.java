@@ -1,5 +1,6 @@
 package br.com.sistema.service;
 
+import br.com.sistema.BusinessRuleException;
 import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.DAO.ReservationDAO;
@@ -18,53 +19,94 @@ import java.util.Scanner;
 public class ReservationService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static EntityManager entityManager = JPAUtil.getEntityManager();
+
 
 
     public void makeReservation() {
 
-        System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
-        Long bedroomNumber = scanner.nextLong();
+        try {
+
+            EntityManager entityManager = JPAUtil.getEntityManager();
+            GuestDAO guestDAO = new GuestDAO(entityManager);
+            ReservationDAO reservationDAO = new ReservationDAO(entityManager);
+            BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
 
 
-        System.out.print("Digite o Id do cliente que deseja fazer a reserva: ");
-        Long guestId = scanner.nextLong();
+            List<Guest> guests = guestDAO.getAllGuests();
 
-        System.out.print("Digite a quantidade de adultos: ");
-        int adults = scanner.nextInt();
-        scanner.nextLine();
+            for (Guest guest : guests) {
+                System.out.println(guest.stringBuilder());
+                System.out.println();
+            }
 
-        System.out.print("Digite a quantidade de crianças: ");
-        int children = scanner.nextInt();
-        scanner.nextLine();
+            System.out.print("Digite o Id do cliente que deseja fazer a reserva: ");
+            Long guestId = scanner.nextLong();
+            if (!guestDAO.getAllIds().contains(guestId)) {
+                throw new BusinessRuleException("O id digitado não corresponde a nenhum dos hóspedes");
+            }
 
-        System.out.print("Data do check-in (DD/MM/AAAA): ");
-        LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            System.out.print("Digite a quantidade de adultos: ");
+            int adults = scanner.nextInt();
+            scanner.nextLine();
 
-        System.out.print("Data do check-out (DD/MM/AAAA): ");
-        LocalDate checkOut = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            System.out.print("Digite a quantidade de crianças: ");
+            int children = scanner.nextInt();
+            scanner.nextLine();
+
+            int people = adults + children;
+            int contCapacity = 0;
+
+            System.out.printf("\nQuarto disponível para %d ou mais pessoas", people);
+
+            for (Bedroom bedroom : bedroomDAO.showBedroomPerCapacity(people)) {
+
+                System.out.println("\n" + bedroom.stringBuilder());
+
+                if (bedroom.getCapacity() >= people) {
+                    contCapacity ++;
+                }
+            }
+            if (contCapacity == 0) {
+                throw new BusinessRuleException("Desculpe, mas não temos quartos " +
+                        "disponíveis para essa quantidade de pessoas");
+            }
 
 
-        ReservationDAO reservationDAO = new ReservationDAO(entityManager);
-        BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
-        GuestDAO guestDAO = new GuestDAO(entityManager);
+            System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
+            Long bedroomNumber = scanner.nextLong();
+            scanner.nextLine();
+            if (!reservationDAO.getAllIds().contains(bedroomNumber)) {
+                throw new BusinessRuleException("Esse número de quarto não existe ou não está disponível");
+            }
 
-        Reservation reservation1 = new Reservation();
-        BigDecimal dailyRate = bedroomDAO.getDailyRatePerId(bedroomNumber);
-        Bedroom bedroom = bedroomDAO.getBedroomPerId(bedroomNumber);
-        Guest guest = guestDAO.getGuestPerId(guestId);
-        int calculateDays = reservation1.calculateDays(checkIn, checkOut);
-        BigDecimal stayValue = reservation1.calculateStay(dailyRate, calculateDays, children, adults);
+            System.out.print("Data do check-in (DD/MM/AAAA): ");
+            LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
 
-        Reservation reservation = new Reservation(bedroom, guest, children, adults, checkIn, checkOut, stayValue);
+            System.out.print("Data do check-out (DD/MM/AAAA): ");
+            LocalDate checkOut = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
 
-        entityManager.getTransaction().begin();
-        reservationDAO.save(reservation);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+            Reservation reservation1 = new Reservation();
+            BigDecimal dailyRate = bedroomDAO.getDailyRatePerId(bedroomNumber);
+            Bedroom bedroom = bedroomDAO.getBedroomPerId(bedroomNumber);
+            Guest guest = guestDAO.getGuestPerId(guestId);
+            int calculateDays = reservation1.calculateDays(checkIn, checkOut);
+            BigDecimal stayValue = reservation1.calculateStay(dailyRate, calculateDays, children, adults);
+
+            Reservation reservation = new Reservation(bedroom, guest, children, adults, checkIn, checkOut, stayValue);
+
+            entityManager.getTransaction().begin();
+            reservationDAO.save(reservation);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+        } catch (RuntimeException e) {
+            throw new BusinessRuleException(e.getMessage());
+
+        }
     }
 
     public static void showAllReservations() {
+
+        EntityManager entityManager = JPAUtil.getEntityManager();
         ReservationDAO reservationDAO = new ReservationDAO(entityManager);
         List<Reservation> reservations = reservationDAO.getAllReservation();
 
@@ -75,6 +117,7 @@ public class ReservationService {
     }
     public static void cancelReservation() {
 
+        EntityManager entityManager = JPAUtil.getEntityManager();
         ReservationDAO reservationDAO = new ReservationDAO(entityManager);
 
         List<Reservation> reservationList = reservationDAO.getAllReservation();

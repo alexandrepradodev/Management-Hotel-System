@@ -17,13 +17,11 @@ public class BedroomService {
 
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static EntityManager entityManager = JPAUtil.getEntityManager();
 
     public static void newBedroom(){
 
         try {
-
-
+            EntityManager entityManager = JPAUtil.getEntityManager();
             System.out.print("\nCapacidade total do quarto: ");
             int capacity = scanner.nextInt();
             if (capacity <= 0) {
@@ -63,6 +61,8 @@ public class BedroomService {
     }
 
     public static void showAllBedrooms() {
+
+        EntityManager entityManager = JPAUtil.getEntityManager();
         BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
         List<Bedroom> bedrooms = bedroomDAO.showAllBedrooms();
 
@@ -71,4 +71,5 @@ public class BedroomService {
             System.out.println();
         }
     }
+
 }
