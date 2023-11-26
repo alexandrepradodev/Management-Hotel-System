@@ -56,9 +56,11 @@ public class BedroomDAO {
 
     }
     public List<Long> getAllids() {
-        String jpql = "SELECT b.id FROM Bedroom b";
+        String jpql = "SELECT b.bedroomNumber FROM Bedroom b";
         return entityManager.createQuery(jpql, Long.class).getResultList();
     }
+
+
 
 
 }

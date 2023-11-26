@@ -57,7 +57,7 @@ public class ReservationService {
             int people = adults + children;
             int contCapacity = 0;
 
-            System.out.printf("\nQuarto disponível para %d ou mais pessoas", people);
+            System.out.printf("\nQuarto disponível para %d ou mais pessoas\n", people);
 
             for (Bedroom bedroom : bedroomDAO.showBedroomPerCapacity(people)) {
 
@@ -76,9 +76,13 @@ public class ReservationService {
             System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
             Long bedroomNumber = scanner.nextLong();
 
-            if (!reservationDAO.getAllIds().contains(bedroomNumber)) {
-                throw new BusinessRuleException("Esse número de quarto não existe. ");
+            if (!bedroomDAO.getAllids().contains(bedroomNumber)) {
+                throw new BusinessRuleException("Esse número de quarto não existe");
+
+            } else if (!bedroomDAO.showBedroomPerCapacity(people).contains(bedroomNumber)) {
+                throw new BusinessRuleException("Esse quarto não comporta o número de pessoas da sua reserva");
             }
+
             scanner.nextLine();
             System.out.print("Data do check-in (DD/MM/AAAA): ");
             LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
