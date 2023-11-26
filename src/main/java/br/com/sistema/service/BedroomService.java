@@ -29,19 +29,34 @@ public class BedroomService {
             }
             scanner.nextLine();
 
-            System.out.print("Valor da diária: ");
-            BigDecimal dailyRate = scanner.nextBigDecimal();
-            if (dailyRate.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new IllegalArgumentException("O valor da diária precisa ser maior que zero reais");
-            }
-            scanner.nextLine();
+            String tierName = " ";
+            BigDecimal dailyRate = new BigDecimal(0);
 
-            System.out.print("Nível do quarto: ");
-            String tierName = scanner.nextLine();
-            Tier tier = new Tier(tierName);
-            if (tierName.isEmpty()) {
-                throw new IllegalArgumentException("O nível do quarto não pode ficar vazio");
+            System.out.print("Quarto Padrão ou Master? (P/M): ");
+            char tierChar = scanner.nextLine().charAt(0);
+
+            if (Character.toUpperCase(tierChar) == 'P' && capacity <= 2) {
+                tierName = "Padrao";
+                dailyRate = new BigDecimal(250);
             }
+            else if (Character.toUpperCase(tierChar) == 'M' && capacity <= 2) {
+                tierName = "Master";
+                dailyRate = new BigDecimal(350);
+            }
+            else if (Character.toUpperCase(tierChar) == 'P' && capacity > 2 ) {
+                tierName = "Padrao";
+                dailyRate = new BigDecimal(350);
+            }
+            else if (Character.toUpperCase(tierChar) == 'M' && capacity > 2) {
+                tierName = "Master";
+                dailyRate = new BigDecimal(650);
+            }
+            else {
+                throw new BusinessRuleException("O valor digitado para o tipo de quarto é inválido");
+            }
+            Tier tier = new Tier(tierName);
+
+
 
             BedroomDAO bedroomDAO = new BedroomDAO(entityManager);
             Bedroom bedroom = new Bedroom(capacity, dailyRate, tier);
