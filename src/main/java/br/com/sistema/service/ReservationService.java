@@ -1,6 +1,6 @@
 package br.com.sistema.service;
 
-import br.com.sistema.BusinessRuleException;
+import br.com.sistema.exceptions.BusinessRuleException;
 import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.DAO.ReservationDAO;
@@ -59,7 +59,7 @@ public class ReservationService {
 
             System.out.printf("\nQuarto disponível para %d ou mais pessoas\n", people);
 
-            for (Bedroom bedroom : bedroomDAO.showBedroomPerCapacity(people)) {
+            for (Bedroom bedroom : bedroomDAO.getBedroomPerCapacity(people)) {
 
                 System.out.println("\n" + bedroom.stringBuilder());
 
@@ -79,7 +79,7 @@ public class ReservationService {
             if (!bedroomDAO.getAllids().contains(bedroomNumber)) {
                 throw new BusinessRuleException("Esse número de quarto não existe");
 
-            } else if (!bedroomDAO.showBedroomPerCapacity(people).contains(bedroomNumber)) {
+            } else if (!bedroomDAO.getBedroomPerCapacity(people).contains(bedroomNumber)) {
                 throw new BusinessRuleException("Esse quarto não comporta o número de pessoas da sua reserva");
             }
 
@@ -141,6 +141,10 @@ public class ReservationService {
 
         System.out.print("Digite o id da reserva que deseja cancelar: ");
         Long reservationId = scanner.nextLong();
+
+        if (!reservationDAO.getAllIds().contains(reservationId)) {
+            throw new BusinessRuleException("Essa reserva não existe");
+        }
 
         entityManager.getTransaction().begin();
         reservationDAO.cancelReservation(reservationId);

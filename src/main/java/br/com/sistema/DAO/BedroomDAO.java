@@ -49,7 +49,7 @@ public class BedroomDAO {
                 .createQuery(jpql, int.class).setParameter("id", id)
                 .getSingleResult();
     }
-    public List<Bedroom> showBedroomPerCapacity(int people) {
+    public List<Bedroom> getBedroomPerCapacity(int people) {
         String jpql = "SELECT b FROM Bedroom b WHERE b.capacity >= :people";
         return entityManager.createQuery(jpql, Bedroom.class).setParameter("people", people).getResultList();
 

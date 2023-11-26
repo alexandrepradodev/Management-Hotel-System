@@ -1,4 +1,4 @@
-package br.com.sistema;
+package br.com.sistema.exceptions;
 
 public class BusinessRuleException extends RuntimeException{
     public BusinessRuleException(String message) {

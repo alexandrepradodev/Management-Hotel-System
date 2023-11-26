@@ -1,6 +1,6 @@
 package br.com.sistema.service;
 
-import br.com.sistema.BusinessRuleException;
+import br.com.sistema.exceptions.BusinessRuleException;
 import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.TierDAO;
 import br.com.sistema.model.Bedroom;

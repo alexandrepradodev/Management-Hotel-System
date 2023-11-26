@@ -1,6 +1,6 @@
 package br.com.sistema.service;
 
-import br.com.sistema.BusinessRuleException;
+import br.com.sistema.exceptions.BusinessRuleException;
 import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.model.Guest;
 import br.com.sistema.util.AgeCalculator;
