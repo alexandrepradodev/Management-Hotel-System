@@ -20,6 +20,7 @@ public class ReservationService {
     private static Scanner scanner = new Scanner(System.in);
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private LocalDate now = LocalDate.now();
+    Long bedroomNumber = null;
 
 
 
@@ -46,6 +47,19 @@ public class ReservationService {
                 throw new BusinessRuleException("O id digitado não corresponde a nenhum dos hóspedes");
             }
 
+            scanner.nextLine();
+            System.out.print("\nData do check-in (DD/MM/AAAA): ");
+            LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            if (checkIn.isBefore(now)) {
+                throw new BusinessRuleException("A data de check-in precisa ser a de hoje ou depois");
+            }
+
+            System.out.print("Data do check-out (DD/MM/AAAA): ");
+            LocalDate checkOut = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            if (checkOut.isBefore(checkIn)) {
+                throw new BusinessRuleException("A data de check-out precisa ser a" +
+                        " data do check-in ou uma data posterior");
+            }
             System.out.print("Digite a quantidade de adultos: ");
             int adults = scanner.nextInt();
             scanner.nextLine();
@@ -57,7 +71,7 @@ public class ReservationService {
             int people = adults + children;
             int contCapacity = 0;
 
-            System.out.printf("\nQuarto disponível para %d ou mais pessoas\n", people);
+            System.out.printf("\nQuarto disponível para %d ou mais pessoas.\n", people);
 
             for (Bedroom bedroom : bedroomDAO.getBedroomPerCapacity(people)) {
 
@@ -72,30 +86,14 @@ public class ReservationService {
                         "disponíveis para essa quantidade de pessoas");
             }
 
-
-            System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
-            Long bedroomNumber = scanner.nextLong();
-
-            if (!bedroomDAO.getAllids().contains(bedroomNumber)) {
-                throw new BusinessRuleException("Esse número de quarto não existe");
-
-            } else if (!bedroomDAO.getBedroomPerCapacity(people).contains(bedroomNumber)) {
-                throw new BusinessRuleException("Esse quarto não comporta o número de pessoas da sua reserva");
+            if (reservationDAO.getBedroomsAvaliable(checkIn, checkOut).isEmpty()) {
+                throw new BusinessRuleException("Não existe quarto disponível para o período especificado");
+            }
+            else {
+                System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
+                bedroomNumber = scanner.nextLong();
             }
 
-            scanner.nextLine();
-            System.out.print("Data do check-in (DD/MM/AAAA): ");
-            LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
-            if (checkIn.isBefore(now)) {
-                throw new BusinessRuleException("A data de check-in precisa ser a de hoje ou depois");
-            }
-
-            System.out.print("Data do check-out (DD/MM/AAAA): ");
-            LocalDate checkOut = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
-            if (checkOut.isBefore(checkIn)) {
-                throw new BusinessRuleException("A data de check-out precisa ser a" +
-                        " data do check-in ou uma data posterior");
-            }
 
             Reservation reservation1 = new Reservation();
             BigDecimal dailyRate = bedroomDAO.getDailyRatePerId(bedroomNumber);
