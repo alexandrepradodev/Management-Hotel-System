@@ -5,6 +5,7 @@ import br.com.sistema.model.Reservation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,15 +52,30 @@ public class ReservationDAO {
     }
 
     public List<Bedroom> getBedroomsAvaliable(LocalDate checkIn, LocalDate checkOut) {
-        String jpql = "SELECT b FROM Bedroom b WHERE b.bedroomNumber NOT IN " +
-                "(SELECT r.bedroom.bedroomNumber FROM Reservation r "
-                + "WHERE r.checkOut > :checkIn AND r.checkIn < :checkOut)";
 
-        TypedQuery<Bedroom> query = entityManager.createQuery(jpql, Bedroom.class)
-                .setParameter("checkIn", checkIn)
-                .setParameter("checkOut", checkOut);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        return query.getResultList();
+        CriteriaQuery<Bedroom> criteriaQuery = criteriaBuilder.createQuery(Bedroom.class);
+        Root<Bedroom> bedroomRoot = criteriaQuery.from(Bedroom.class);
+        criteriaQuery.select(bedroomRoot);
+
+        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+        Root<Reservation> reservationRoot = subquery.from(Reservation.class);
+        subquery.select(reservationRoot.get("bedroom").get("bedroomNumber"));
+
+        Predicate checkOutPredicate = criteriaBuilder.greaterThan(reservationRoot.get("checkOut"), checkIn);
+        Predicate checkInPredicate = criteriaBuilder.lessThan(reservationRoot.get("checkIn"), checkOut);
+        Predicate subqueryPredicate = criteriaBuilder.and(checkOutPredicate, checkInPredicate);
+        subquery.where(subqueryPredicate);
+
+        Expression<Long> bedroomNumberExpression = bedroomRoot.get("bedroomNumber");
+        Predicate notInPredicate = criteriaBuilder.not(bedroomNumberExpression.in(subquery));
+
+        criteriaQuery.where(notInPredicate);
+
+        TypedQuery<Bedroom> query = entityManager.createQuery(criteriaQuery);
+        List<Bedroom> bedroomList = query.getResultList();
+        return bedroomList;
 
 
 

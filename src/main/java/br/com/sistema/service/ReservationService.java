@@ -69,29 +69,22 @@ public class ReservationService {
             scanner.nextLine();
 
             int people = adults + children;
-            int contCapacity = 0;
 
-            System.out.printf("\nQuarto disponível para %d ou mais pessoas.\n", people);
-
-            for (Bedroom bedroom : bedroomDAO.getBedroomPerCapacity(people)) {
-
+            for (Bedroom bedroom : reservationDAO.getBedroomsAvaliable(checkIn, checkOut)) {
                 System.out.println("\n" + bedroom.stringBuilder());
-
-                if (bedroom.getCapacity() >= people) {
-                    contCapacity ++;
-                }
-            }
-            if (contCapacity == 0) {
-                throw new BusinessRuleException("Desculpe, mas não temos quartos " +
-                        "disponíveis para essa quantidade de pessoas");
             }
 
             if (reservationDAO.getBedroomsAvaliable(checkIn, checkOut).isEmpty()) {
-                throw new BusinessRuleException("Não existe quarto disponível para o período especificado");
+                throw new BusinessRuleException("Não existe quarto disponível para esse período de reserva");
             }
-            else {
-                System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
-                bedroomNumber = scanner.nextLong();
+
+
+            System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
+            bedroomNumber = scanner.nextLong();
+
+
+            if (!bedroomDAO.checkTheBedroomCapacity(bedroomNumber, people)) {
+                throw new BusinessRuleException("Esse quarto não comporta o número de pessoas da reserva");
             }
 
 
