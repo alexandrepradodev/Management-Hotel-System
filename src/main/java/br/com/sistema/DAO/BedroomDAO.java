@@ -59,13 +59,13 @@ public class BedroomDAO {
     public boolean checkTheBedroomCapacity(Long bedroomNumber, int people) {
 
 
-            String jpql = "SELECT b.capacity FROM Bedroom b WHERE b.bedroomNumber = :bedroomNumber";
+        String jpql = "SELECT b.capacity FROM Bedroom b WHERE b.bedroomNumber = :bedroomNumber";
 
-            int bedroomCapacity = entityManager.createQuery(jpql, int.class)
-                    .setParameter("bedroomNumber", bedroomNumber)
-                    .getSingleResult();
+        int bedroomCapacity = entityManager.createQuery(jpql, Integer.class)
+                .setParameter("bedroomNumber", bedroomNumber)
+                .getSingleResult();
 
-        return bedroomCapacity >= people;
+       return bedroomCapacity >= people;
     }
 
     public List<Long> getAllids() {
