@@ -22,7 +22,7 @@ public class Guest {
     private LocalDate birthday;
     @Column(name = "idade")
     private int age;
-    @OneToMany(mappedBy = "guest")
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.REMOVE)
     private List<Reservation> reservations = new ArrayList<>();
 
     public Guest() {

@@ -45,29 +45,11 @@ public class GuestDAO {
                 .getResultList();
 
         List<Long> idListForremoval = new ArrayList<>();
-        for (Long reservationId : reservationIds) {
-            entityManager.find(Reservation.class, reservationId);
-            idListForremoval.add(reservationId);
-        }
-
-        String jpqlAllReservations = "SELECT r FROM Reservation r";
-        List<Reservation> allReservations = entityManager
-                .createQuery(jpqlAllReservations, Reservation.class)
-                .getResultList();
 
         if (guest != null) {
 
             entityManager.remove(guest);
-
-                for (Long reservationId : idListForremoval) {
-                    Reservation reservationForRemoval = entityManager.find(Reservation.class, reservationId);
-                    entityManager.remove(reservationForRemoval);
-                }
-
-            System.out.println("\nExclusão realizada com sucesso!");
         }
-
-
     }
     public List<Long> getAllIds() {
 
