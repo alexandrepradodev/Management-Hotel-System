@@ -38,13 +38,6 @@ public class GuestDAO {
     }
     public void removeGuestPerId(Long id) {
         Guest guest = entityManager.find(Guest.class, id);
-        String jpql = "SELECT r.id FROM Reservation r WHERE r.guest.id = :id";
-        List<Long> reservationIds = entityManager
-                .createQuery(jpql, Long.class)
-                .setParameter("id", id)
-                .getResultList();
-
-        List<Long> idListForremoval = new ArrayList<>();
 
         if (guest != null) {
 
