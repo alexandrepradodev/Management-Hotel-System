@@ -48,6 +48,8 @@ public class Main {
                 case 8:
                     cancelReservation();
                     break;
+                case 0:
+                    System.out.println("\nPROGRAMA ENCERRADO");
 
                 }
             }
@@ -110,6 +112,7 @@ public class Main {
         ReservationService.cancelReservation();
 
     }
+
 }
 
 

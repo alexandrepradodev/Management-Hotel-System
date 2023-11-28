@@ -74,7 +74,8 @@ public class ReservationDAO {
         criteriaQuery.where(notInPredicate);
 
         TypedQuery<Bedroom> query = entityManager.createQuery(criteriaQuery);
-        return query.getResultList();
+        List<Bedroom> bedroomList = query.getResultList();
+        return bedroomList;
 
 
 

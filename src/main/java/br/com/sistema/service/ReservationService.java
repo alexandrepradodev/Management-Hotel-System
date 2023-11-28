@@ -73,6 +73,7 @@ public class ReservationService {
             for (Bedroom bedroom : reservationDAO.getBedroomsAvaliable(checkIn, checkOut)) {
                 System.out.println("\n" + bedroom.stringBuilder());
             }
+
             if (reservationDAO.getBedroomsAvaliable(checkIn, checkOut).isEmpty()) {
                 throw new BusinessRuleException("Não existe quarto disponível para esse período de reserva");
             }
@@ -81,6 +82,10 @@ public class ReservationService {
             System.out.print("\nNúmero do quarto que deseja fazer a reserva: ");
             bedroomNumber = scanner.nextLong();
 
+
+            if (!bedroomDAO.checkTheBedroomCapacity(bedroomNumber, people)) {
+                throw new BusinessRuleException("Esse quarto não comporta o número de pessoas da reserva");
+            }
 
 
             Reservation reservation1 = new Reservation();

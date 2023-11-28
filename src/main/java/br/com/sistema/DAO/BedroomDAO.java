@@ -3,6 +3,7 @@ package br.com.sistema.DAO;
 import br.com.sistema.model.Bedroom;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -53,8 +54,20 @@ public class BedroomDAO {
         String jpql = "SELECT b FROM Bedroom b WHERE b.capacity >= :people";
         return entityManager.createQuery(jpql, Bedroom.class).setParameter("people", people).getResultList();
 
-
     }
+
+    public boolean checkTheBedroomCapacity(Long bedroomNumber, int people) {
+
+
+            String jpql = "SELECT b.capacity FROM Bedroom b WHERE b.bedroomNumber = :bedroomNumber";
+
+            int bedroomCapacity = entityManager.createQuery(jpql, int.class)
+                    .setParameter("bedroomNumber", bedroomNumber)
+                    .getSingleResult();
+
+        return bedroomCapacity >= people;
+    }
+
     public List<Long> getAllids() {
         String jpql = "SELECT b.bedroomNumber FROM Bedroom b";
         return entityManager.createQuery(jpql, Long.class).getResultList();
