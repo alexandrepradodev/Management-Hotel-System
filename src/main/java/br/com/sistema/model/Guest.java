@@ -78,6 +78,22 @@ public class Guest {
         this.reservations = reservations;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public StringBuilder stringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Id: ").append(id);

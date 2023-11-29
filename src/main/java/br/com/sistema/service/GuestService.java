@@ -43,14 +43,14 @@ public class GuestService {
                 throw new BusinessRuleException("O CPF digitado é inválido.");
             }
 
+            cpf = cpf.replaceAll("[^0-9]", "");
+
             System.out.print("Email do hóspede: ");
             String email = scanner.nextLine();
 
             if (!EmailValidator.validateEmail(email)) {
                 throw new BusinessRuleException("Esse e-mail possui um formato inválido");
             }
-
-
 
             System.out.print("Data de nascimento: ");
             LocalDate birthday = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
