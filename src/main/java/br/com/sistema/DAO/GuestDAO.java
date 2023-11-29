@@ -51,4 +51,12 @@ public class GuestDAO {
         return ids;
 
     }
+    public List<String> checkIfCPFExists() {
+        String jpql = "SELECT g.cpf FROM Guest g";
+        return entityManager.createQuery(jpql, String.class).getResultList();
+    }
+    public List<String> checkIfEmailExists() {
+        String jpql = "SELECT g.email FROM Guest g";
+        return entityManager.createQuery(jpql, String.class).getResultList();
+    }
 }

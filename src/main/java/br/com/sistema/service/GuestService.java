@@ -28,6 +28,7 @@ public class GuestService {
 
             System.out.print("\nNome do hóspede: ");
             String name = scanner.nextLine();
+            GuestDAO guestDAO = new GuestDAO(entityManager);
 
             // Depois de name.matches vem um regex que identifica se há números no nome do cliente. Se existir,
             // um erro será lançado
@@ -45,8 +46,16 @@ public class GuestService {
 
             cpf = cpf.replaceAll("[^0-9]", "");
 
+            if (guestDAO.checkIfCPFExists().contains(cpf)) {
+                throw new BusinessRuleException("O CPF digitado já pertence a algum hóspede");
+            }
+
             System.out.print("Email do hóspede: ");
             String email = scanner.nextLine();
+
+            if (guestDAO.checkIfEmailExists().contains(email)) {
+                throw new BusinessRuleException("O email digitado já pertence a algum hóspede");
+            }
 
             if (!EmailValidator.validateEmail(email)) {
                 throw new BusinessRuleException("Esse e-mail possui um formato inválido");
@@ -68,7 +77,6 @@ public class GuestService {
             }
 
             Guest guest = new Guest(name, cpf, email, birthday, age);
-            GuestDAO guestDAO = new GuestDAO(entityManager);
 
             entityManager.getTransaction().begin();
             guestDAO.save(guest);
