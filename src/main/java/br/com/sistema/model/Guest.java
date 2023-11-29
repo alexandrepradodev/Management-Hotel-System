@@ -18,6 +18,8 @@ public class Guest {
     private Long id;
     @Column(name = "nome")
     private String name;
+    private String cpf;
+    private String email;
     @Column(name = "data_nascimento")
     private LocalDate birthday;
     @Column(name = "idade")
@@ -28,8 +30,10 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(String name, LocalDate birthday, int age) {
+    public Guest(String name, String cpf, String email, LocalDate birthday, int age) {
         this.name = name;
+        this.cpf = cpf;
+        this.email = email;
         this.birthday = birthday;
         this.age = age;
     }
@@ -77,6 +81,8 @@ public class Guest {
     public StringBuilder stringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Id: ").append(id);
+        stringBuilder.append("\nCPF: ").append(cpf);
+        stringBuilder.append("\nEmail: ").append(email);
         stringBuilder.append("\nNome: ").append(name);
         stringBuilder.append("\nData de nascimento: ").append(birthday.format(dateTimeFormatter));
         stringBuilder.append("\nIdade: ").append(age).append(" anos");

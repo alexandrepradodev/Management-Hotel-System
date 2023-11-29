@@ -28,10 +28,7 @@ public class BedroomDAO {
                 .createQuery(jpql, Bedroom.class)
                 .setParameter("id", id)
                 .getSingleResult();
-
-
     }
-
     public BigDecimal getDailyRatePerId(Long id) {
         String jpql = "SELECT b.dailyRate FROM Bedroom b WHERE b.id = :id";
         return entityManager
@@ -47,7 +44,7 @@ public class BedroomDAO {
     public int getBedroomCapacity(Long id) {
         String jpql = "SELECT b.capacity FROM Bedroom b WHERE b.id = :id";
         return entityManager
-                .createQuery(jpql, int.class).setParameter("id", id)
+                .createQuery(jpql, Integer.class).setParameter("id", id)
                 .getSingleResult();
     }
     public List<Bedroom> getBedroomPerCapacity(int people) {

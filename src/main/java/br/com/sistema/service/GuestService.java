@@ -5,6 +5,7 @@ import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.model.Guest;
 import br.com.sistema.util.AgeCalculator;
 import br.com.sistema.util.JPAUtil;
+import br.com.sistema.util.ValidateCPF;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -26,9 +27,24 @@ public class GuestService {
 
             System.out.print("\nNome do hóspede: ");
             String name = scanner.nextLine();
+
+            // Depois de name.matches vem um regex que identifica se há números no nome do cliente. Se existir,
+            // um erro será lançado
+
             if (name.isEmpty() || name.matches(".*\\d+.*")) {
                 throw new IllegalArgumentException("O nome do hóspede não pode estar vazio ou conter números");
             }
+
+            System.out.print("CPF do hóspede: ");
+            String cpf = scanner.nextLine();
+
+            if (!ValidateCPF.CPFValidator.validateCPF(cpf)) {
+                throw new BusinessRuleException("O CPF digitado é inválido.");
+            }
+
+            System.out.print("Email do hóspede: ");
+            String email = scanner.nextLine();
+
 
 
             System.out.print("Data de nascimento: ");
@@ -46,7 +62,7 @@ public class GuestService {
                         " o hóspede precisa ter mais de 14 anos");
             }
 
-            Guest guest = new Guest(name, birthday, age);
+            Guest guest = new Guest(name, cpf, email, birthday, age);
             GuestDAO guestDAO = new GuestDAO(entityManager);
 
             entityManager.getTransaction().begin();
