@@ -4,6 +4,9 @@ import br.com.sistema.model.Bedroom;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -37,8 +40,12 @@ public class BedroomDAO {
                 .getSingleResult();
     }
     public List<Bedroom> showAllBedrooms() {
+
         String jpql = "SELECT b FROM Bedroom b";
-        return entityManager.createQuery(jpql, Bedroom.class).getResultList();
+
+        return entityManager.createQuery(jpql, Bedroom.class)
+                .getResultList();
+
     }
 
     public int getBedroomCapacity(Long id) {

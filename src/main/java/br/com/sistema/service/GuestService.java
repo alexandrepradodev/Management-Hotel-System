@@ -4,8 +4,9 @@ import br.com.sistema.exceptions.BusinessRuleException;
 import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.model.Guest;
 import br.com.sistema.util.AgeCalculator;
+import br.com.sistema.util.EmailValidator;
 import br.com.sistema.util.JPAUtil;
-import br.com.sistema.util.ValidateCPF;
+import br.com.sistema.util.CPFValidator;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -38,12 +39,16 @@ public class GuestService {
             System.out.print("CPF do hóspede: ");
             String cpf = scanner.nextLine();
 
-            if (!ValidateCPF.CPFValidator.validateCPF(cpf)) {
+            if (!CPFValidator.validateCPF(cpf)) {
                 throw new BusinessRuleException("O CPF digitado é inválido.");
             }
 
             System.out.print("Email do hóspede: ");
             String email = scanner.nextLine();
+
+            if (!EmailValidator.validateEmail(email)) {
+                throw new BusinessRuleException("Esse e-mail possui um formato inválido");
+            }
 
 
 
