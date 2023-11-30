@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
-        System.out.println("GOLDEN WIND HOTEL");
+        System.out.println("StayFy");
 
         int option = 100;
 
@@ -65,12 +65,13 @@ public class Main {
                 6 - Listar reservas.
                 7 - Excluir cadastro de hóspede.
                 8 - Cancelar reserva de hóspede.
+                9 - Mostrar estatísticas sobre o hotel.
                 0 - Sair.
                 """);
 
         System.out.print("Digite a ação que deseja: ");
-
         return scanner.nextInt();
+
     }
     public static void newGuest() {
 
@@ -82,7 +83,6 @@ public class Main {
 
         BedroomService.newBedroom();
     }
-
     public static void makeReservation() {
 
         ReservationService reservationService = new ReservationService();
@@ -110,6 +110,9 @@ public class Main {
     public static void cancelReservation() {
 
         ReservationService.cancelReservation();
+
+    }
+    public static void hotelStats() {
 
     }
 
