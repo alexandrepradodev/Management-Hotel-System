@@ -96,10 +96,10 @@ public class Guest {
 
     public StringBuilder stringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Id: ").append(id);
+        stringBuilder.append("\nId: ").append(id);
+        stringBuilder.append("\nNome: ").append(name);
         stringBuilder.append("\nCPF: ").append(cpf);
         stringBuilder.append("\nEmail: ").append(email);
-        stringBuilder.append("\nNome: ").append(name);
         stringBuilder.append("\nData de nascimento: ").append(birthday.format(dateTimeFormatter));
         stringBuilder.append("\nIdade: ").append(age).append(" anos");
         return stringBuilder;

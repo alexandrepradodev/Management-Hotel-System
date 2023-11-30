@@ -132,7 +132,7 @@ public class Reservation {
 
     public StringBuilder stringBuilder2() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Id da reserva: ").append(id);
+        stringBuilder.append("\nId da reserva: ").append(id);
         stringBuilder.append("\nNome do hóspeede: ").append(guest.getName());
         stringBuilder.append("\nNúmero do quarto: ").append(bedroom.getBedroomNumber());
         stringBuilder.append("\nData de Check-in: ").append(checkIn.format(dateTimeFormatter));
@@ -142,7 +142,7 @@ public class Reservation {
 
     public StringBuilder stringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Número do quarto: ").append(bedroom.getBedroomNumber());
+        stringBuilder.append("\nNúmero do quarto: ").append(bedroom.getBedroomNumber());
         stringBuilder.append("\nNome do hóspede: ").append(guest.getName());
         stringBuilder.append("\nQuantidade de crianças: ").append(children);
         stringBuilder.append("\nQuantidade de adultos: ").append(adults);

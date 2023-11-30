@@ -64,6 +64,7 @@ public class HotelStats {
 
     public StringBuilder stringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n==========DADOS ESTATÍSTICOS==========");
         stringBuilder.append("\nSoma total das estadias: R$ ").append(sumOfStaysValue());
         stringBuilder.append("\nNúmero de reservas: ").append(stayQuantity());
         stringBuilder.append("\nNúmero de hóspedes cadastrados: ").append(guestQuantity());
@@ -71,6 +72,7 @@ public class HotelStats {
         stringBuilder.append("\nMédia de preço de reserva: R$ ").append(String.format("%.2f", stayAVG()));
         stringBuilder.append("\nReserva mais cara: R$").append(String.format("%.2f", moreExpensiveStay()));
         stringBuilder.append("\nReserva mais barata: R$").append(String.format("%.2f", cheapestStay()));
+        stringBuilder.append("\n=====================================");
         return stringBuilder;
     }
 }
