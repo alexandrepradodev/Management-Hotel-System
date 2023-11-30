@@ -6,6 +6,7 @@ import br.com.sistema.DAO.TierDAO;
 import br.com.sistema.model.Bedroom;
 import br.com.sistema.model.Tier;
 import br.com.sistema.util.JPAUtil;
+import br.com.sistema.util.StayCalculator;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
@@ -35,25 +36,15 @@ public class BedroomService {
             System.out.print("Quarto Padrão ou Master? (P/M): ");
             char tierChar = scanner.nextLine().charAt(0);
 
-            if (Character.toUpperCase(tierChar) == 'P' && capacity <= 2) {
-                tierName = "Padrao";
-                dailyRate = new BigDecimal(250);
+            if (Character.toUpperCase(tierChar) == 'P') {
+                tierName = "padrao";
+
+            } else if (Character.toUpperCase(tierChar) == 'M') {
+                tierName = "master";
             }
-            else if (Character.toUpperCase(tierChar) == 'M' && capacity <= 2) {
-                tierName = "Master";
-                dailyRate = new BigDecimal(350);
-            }
-            else if (Character.toUpperCase(tierChar) == 'P' && capacity > 2 ) {
-                tierName = "Padrao";
-                dailyRate = new BigDecimal(350);
-            }
-            else if (Character.toUpperCase(tierChar) == 'M' && capacity > 2) {
-                tierName = "Master";
-                dailyRate = new BigDecimal(650);
-            }
-            else {
-                throw new BusinessRuleException("O valor digitado para o tipo de quarto é inválido");
-            }
+
+            dailyRate = StayCalculator.calculateStay(capacity, tierChar);
+
             Tier tier = new Tier(tierName);
 
 

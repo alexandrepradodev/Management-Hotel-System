@@ -2,7 +2,7 @@ package br.com.sistema.util;
 
 import java.math.BigDecimal;
 
-public class StayValue {
+public class StayCalculator {
 
     public static BigDecimal calculateStay(int people, char tier) {
         BigDecimal peopleBigDecimal = new BigDecimal(people);
