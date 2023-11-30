@@ -1,5 +1,6 @@
 import br.com.sistema.service.BedroomService;
 import br.com.sistema.service.GuestService;
+import br.com.sistema.service.HotelStatsService;
 import br.com.sistema.service.ReservationService;
 
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ public class Main {
 
     public static Scanner scanner = new Scanner(System.in);
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static ReservationService reservationService = new ReservationService();
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
@@ -48,6 +50,9 @@ public class Main {
                 case 8:
                     cancelReservation();
                     break;
+                case 9:
+                    hotelStats();
+                    break;
                 case 0:
                     System.out.println("\nPROGRAMA ENCERRADO");
 
@@ -85,7 +90,6 @@ public class Main {
     }
     public static void makeReservation() {
 
-        ReservationService reservationService = new ReservationService();
         reservationService.makeReservation();
     }
 
@@ -113,6 +117,8 @@ public class Main {
 
     }
     public static void hotelStats() {
+
+        HotelStatsService.showHotelStats();
 
     }
 

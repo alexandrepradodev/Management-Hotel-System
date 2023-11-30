@@ -7,6 +7,7 @@ import br.com.sistema.DAO.ReservationDAO;
 import br.com.sistema.model.Bedroom;
 import br.com.sistema.model.Guest;
 import br.com.sistema.model.Reservation;
+import br.com.sistema.util.CheckInValidator;
 import br.com.sistema.util.JPAUtil;
 
 import javax.persistence.EntityManager;
@@ -52,6 +53,9 @@ public class ReservationService {
             LocalDate checkIn = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
             if (checkIn.isBefore(now)) {
                 throw new BusinessRuleException("A data de check-in precisa ser a de hoje ou depois");
+            }
+            if (CheckInValidator.isCheckInWithinOneYear(checkIn)) {
+                throw new BusinessRuleException("Somente aceitamos reservas dentro do período de um ano");
             }
 
             System.out.print("Data do check-out (DD/MM/AAAA): ");
