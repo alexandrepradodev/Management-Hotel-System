@@ -1,11 +1,8 @@
 package br.com.sistema.DAO;
 
-import br.com.sistema.model.Bedroom;
 import br.com.sistema.model.Guest;
-import br.com.sistema.model.Reservation;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuestDAO {
@@ -47,8 +44,8 @@ public class GuestDAO {
     public List<Long> getAllIds() {
 
         String jpql = "SELECT g.id FROM Guest g";
-        List<Long> ids = entityManager.createQuery(jpql, Long.class).getResultList();
-        return ids;
+        return entityManager.createQuery(jpql, Long.class).getResultList();
+
 
     }
     public List<String> checkIfCPFExists() {

@@ -3,13 +3,9 @@ package br.com.sistema.util;
 import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.GuestDAO;
 import br.com.sistema.DAO.ReservationDAO;
-import br.com.sistema.model.Bedroom;
-import br.com.sistema.model.Reservation;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
 
 public class HotelStats {
 

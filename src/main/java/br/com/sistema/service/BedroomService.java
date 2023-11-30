@@ -1,8 +1,8 @@
 package br.com.sistema.service;
 
-import br.com.sistema.exceptions.BusinessRuleException;
 import br.com.sistema.DAO.BedroomDAO;
 import br.com.sistema.DAO.TierDAO;
+import br.com.sistema.exceptions.BusinessRuleException;
 import br.com.sistema.model.Bedroom;
 import br.com.sistema.model.Tier;
 import br.com.sistema.util.JPAUtil;
@@ -10,14 +10,12 @@ import br.com.sistema.util.StayCalculator;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
 public class BedroomService {
 
-    private static Scanner scanner = new Scanner(System.in);
-    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void newBedroom(){
 
@@ -31,7 +29,7 @@ public class BedroomService {
             scanner.nextLine();
 
             String tierName = " ";
-            BigDecimal dailyRate = new BigDecimal(0);
+
 
             System.out.print("Quarto Padrão ou Master? (P/M): ");
             char tierChar = scanner.nextLine().charAt(0);
@@ -43,7 +41,7 @@ public class BedroomService {
                 tierName = "master";
             }
 
-            dailyRate = StayCalculator.calculateStay(capacity, tierChar);
+            BigDecimal dailyRate = StayCalculator.calculateStay(capacity, tierChar);
 
             Tier tier = new Tier(tierName);
 

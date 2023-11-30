@@ -3,15 +3,13 @@ import br.com.sistema.service.GuestService;
 import br.com.sistema.service.HotelStatsService;
 import br.com.sistema.service.ReservationService;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
 
     public static Scanner scanner = new Scanner(System.in);
-    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static ReservationService reservationService = new ReservationService();
+    private static final ReservationService reservationService = new ReservationService();
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);

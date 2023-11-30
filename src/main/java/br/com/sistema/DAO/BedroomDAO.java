@@ -3,10 +3,6 @@ package br.com.sistema.DAO;
 import br.com.sistema.model.Bedroom;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.List;
 
