@@ -1,7 +1,7 @@
 
 # Sistema de gerenciamento de hotéis com JPA e Hibernate
 
-![Logo da StayFy](https://imgur.com/a/AhEOTnb)
+![Logo da StayFy](https://i.imgur.com/wd6Wq99.png)
 
 O projeto é sobre um sistema criado por mim chamado 
 de StayFy. O sistema permite que a administração dos 
