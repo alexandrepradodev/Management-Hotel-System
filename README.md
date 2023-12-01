@@ -36,6 +36,9 @@ O usuário só paga pelo armazenamento que usa.
 ### Dependências do projeto no pom.xml
 ![Imagem do pom.xml](https://i.imgur.com/BtwKQ86.png)
 
+### Modelagem do banco de dados (Modelo Físico)
+![Modelo do banco de dados](https://i.imgur.com/d73OtNp.png)
+
 ## Telas do aplicativo 
 
 
